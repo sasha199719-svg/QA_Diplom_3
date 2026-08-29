@@ -1,3 +1,5 @@
+import allure
+
 from pages.base_page import BasePage
 from locators.feed_page_locators import FeedPageLocators
 from data import FEED_PAGE_URL
@@ -5,9 +7,11 @@ from data import FEED_PAGE_URL
 
 class FeedPage(BasePage):
 
+    @allure.step("Открыть ленту заказов")
     def open_feed_page(self):
         self.open_page(FEED_PAGE_URL)
 
+    @allure.step("Получить значение счётчика «Выполнено за всё время»")
     def get_total_orders(self):
         return int(
             self.get_text(
@@ -15,6 +19,7 @@ class FeedPage(BasePage):
             )
         )
 
+    @allure.step("Получить значение счётчика «Выполнено за сегодня»")
     def get_today_orders(self):
         return int(
             self.get_text(
@@ -22,16 +27,23 @@ class FeedPage(BasePage):
             )
         )
 
+    @allure.step(
+        "Дождаться увеличения счётчика «Выполнено за всё время»"
+    )
     def wait_for_total_orders_increase(self, initial_total):
         self.wait.until(
             lambda driver: self.get_total_orders() > initial_total
         )
 
+    @allure.step(
+        "Дождаться увеличения счётчика «Выполнено за сегодня»"
+    )
     def wait_for_today_orders_increase(self, initial_today):
         self.wait.until(
             lambda driver: self.get_today_orders() > initial_today
         )
 
+    @allure.step("Получить список заказов в работе")
     def get_orders_in_progress(self):
         return [
             element.text
@@ -40,6 +52,9 @@ class FeedPage(BasePage):
             )
         ]
 
+    @allure.step(
+        "Дождаться появления заказа {order_number} в разделе «В работе»"
+    )
     def wait_for_order_in_progress(self, order_number):
         self.wait.until(
             lambda driver: any(
