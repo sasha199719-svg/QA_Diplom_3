@@ -18,8 +18,6 @@ class TestFeed:
 
         initial_total = feed_page.get_total_orders()
 
-        print(f"Было выполнено всего: {initial_total}")
-
         self.create_order(driver, user)
 
         feed_page.open_feed_page()
@@ -29,8 +27,6 @@ class TestFeed:
         )
 
         new_total = feed_page.get_total_orders()
-
-        print(f"Стало выполнено всего: {new_total}")
 
         assert new_total > initial_total
 
@@ -68,8 +64,6 @@ class TestFeed:
             user
         )
 
-        print(f"Номер созданного заказа: {order_number}")
-
         feed_page = FeedPage(driver)
         feed_page.open_feed_page()
 
@@ -78,8 +72,6 @@ class TestFeed:
         )
 
         orders_in_progress = feed_page.get_orders_in_progress()
-
-        print(f"Заказы в работе: {orders_in_progress}")
 
         assert any(
             str(order_number) in order
